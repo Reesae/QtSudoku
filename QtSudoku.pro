@@ -12,17 +12,26 @@ TARGET = QtSudoku
 TEMPLATE = app
 CONFIG += c++14
 
+INCLUDEPATH += C:/boost_1_59_0/
+LIBS += "-LC:/boost_1_59_0/stage/lib/"
+
 SOURCES += main.cpp\
         qtsudoku.cpp \
     sudokumodel.cpp \
     sudokuboardnode.cpp\
-    testsudokuboardnode.cpp
+    testsudokuboardnode.cpp \
+    testsudokumodel.cpp \
+    sudokusquaremodel.cpp \
+    testsudokusquaremodel.cpp
 
 
 HEADERS  += qtsudoku.h \
     sudokumodel.h \
     sudokuboardnode.h \
-testsudokuboardnode.h
+testsudokuboardnode.h \
+    testsudokumodel.h \
+    sudokusquaremodel.h \
+    testsudokusquaremodel.h
 
 
 FORMS    += qtsudoku.ui

@@ -9,7 +9,7 @@ public:
     SudokuBoardNode(unsigned int value);
     unsigned int currentValue;
     std::vector <unsigned int> possibleValue;
-    static const unsigned int size = 3;
+    static constexpr unsigned int size = 3;
 };
 
 #endif // SUDOKUBOARDNODE_H
