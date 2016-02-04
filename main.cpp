@@ -5,6 +5,8 @@
 #include "testsudokumodel.h"
 #include "testsudokusquaremodel.h"
 
+
+
 int main(int argc, char *argv[])
 {
     TestSudokuBoardNode test1;

@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     testsudokuboardnode.cpp \
     testsudokumodel.cpp \
     sudokusquaremodel.cpp \
-    testsudokusquaremodel.cpp
+    testsudokusquaremodel.cpp \
+    nodeview.cpp \
+    sudokuview.cpp
 
 
 HEADERS  += qtsudoku.h \
@@ -31,7 +33,9 @@ HEADERS  += qtsudoku.h \
 testsudokuboardnode.h \
     testsudokumodel.h \
     sudokusquaremodel.h \
-    testsudokusquaremodel.h
+    testsudokusquaremodel.h \
+    nodeview.h \
+    sudokuview.h
 
 
 FORMS    += qtsudoku.ui
