@@ -18,11 +18,15 @@ public:
     QGraphicsTextItem* text;
     QBrush *brush;
     void setPosition(std::string key);
-    void update();
+    void updateText();
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event);
 
     static const int size = 72;
     bool isActive;
+    void onValueChanged();
+signals:
+    void nodeSelect();
+
 
 
 };

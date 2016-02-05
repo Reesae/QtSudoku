@@ -4,9 +4,10 @@
 #include <sudokuboardnode.h>
 #include "sudokusquaremodel.h"
 #include <unordered_map>
-
-class SudokuModel
+#include <QObject>
+class SudokuModel:public QObject
 {
+    Q_OBJECT
 public:
     SudokuModel();
     SudokuModel(const std::vector<unsigned int> values);

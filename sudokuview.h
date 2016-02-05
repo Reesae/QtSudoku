@@ -10,10 +10,14 @@ class SudokuView: public QObject
 public:
     SudokuView(SudokuModel * model);
     std::unordered_map<std::string,NodeView*> boardView;
+    void updateView();
 private:
     SudokuModel * model;
+    NodeView * activeNode;
+
 public slots:
     void keyPressedEvent(QKeyEvent *);
+    void nodeSelected();
 };
 
 #endif // SUDOKUVIEW_H

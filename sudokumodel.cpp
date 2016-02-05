@@ -130,7 +130,8 @@ bool SudokuModel::solveNode(std::string key)
 
     if(node->possibleValue.size() == 1)
     {
-        sudokuBoard[key] = new SudokuBoardNode(node->possibleValue[0]);
+        sudokuBoard[key]->currentValue = node->possibleValue[0];
+        emit sudokuBoard[key]->valueChanged();
         return true;
     }
 
@@ -158,9 +159,9 @@ void SudokuModel::check()
     checkRows();
     checkColumns();
     checkSquares();
-    }catch(std::string e)
+    }catch(std::string s)
     {
-        qDebug()<<QString(e.c_str());
+        qDebug()<<QString(s.c_str());
     }
 }
 
@@ -174,10 +175,10 @@ void SudokuModel::checkRows()
         auto last = std::unique(values.begin(), values.end());
         values.erase(last, values.end());
 
-        for(size_t i = 0;i < values.size();i++)
+        for(size_t i = 0; i < values.size();i++)
         {
             if(values[i] != correctValues[i])
-                throw "Row " + key[0];
+                throw key;
         }
 
     });
@@ -197,7 +198,7 @@ void SudokuModel::checkColumns()
         for(size_t i = 0;i < values.size();i++)
         {
             if(values[i] != correctValues[i])
-                throw "Column " + key[1];
+                throw key;
         }
 
     });
@@ -205,7 +206,7 @@ void SudokuModel::checkColumns()
 
 void SudokuModel::checkSquares()
 {
-    for_each(rowCheckValues.begin(),rowCheckValues.end(),[this](std::string key){
+    for_each(squareCheckValues.begin(),squareCheckValues.end(),[this](std::string key){
 
         std::vector<unsigned int> values = getValuesFromSquare(key);
 

@@ -2,6 +2,7 @@
 #define QTSUDOKU_H
 #include "nodeview.h"
 #include "sudokuview.h"
+#include "button.h"
 #include <QDialog>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -22,7 +23,9 @@ private:
     QGraphicsView * view;
     SudokuModel * sudokuModel;
     SudokuView * sudokuView;
-    NodeView * activeNode;
+    Button * solve;
+    Button * check;
+
     static const std::vector<unsigned int> example;
 signals:
     void keyPressEvent(QKeyEvent*);

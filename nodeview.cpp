@@ -2,8 +2,6 @@
 #include "main.cpp"
 #include <QDebug>
 
-extern QtSudoku w;
-
 NodeView::NodeView(SudokuBoardNode *node):node(node),isActive(false)
 {
     setRect(0,0,size,size);
@@ -27,20 +25,25 @@ NodeView::NodeView(SudokuBoardNode *node):node(node),isActive(false)
 
 void NodeView::setPosition(std::string key)
 {
-    setPos(size * static_cast<int>(key[0] - 'A') ,size * (static_cast<int>(key[1] - '1')));
-    text->setPos(12 + size * static_cast<int>(key[0] - 'A') ,size * (static_cast<int>(key[1] - '1')));
+    setPos(size * (static_cast<int>(key[1] - '1')),size * static_cast<int>(key[0] - 'A'));
+    text->setPos(12 + size * (static_cast<int>(key[1] - '1')), size * static_cast<int>(key[0] - 'A'));
 }
 
-void NodeView::update()
+void NodeView::updateText()
 {
-
+    if(node->currentValue != 0)
+        text->setPlainText(QString::number(node->currentValue));
 }
 
 void NodeView::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
-    qDebug()<<"mouse click";
     isActive = true;
+    emit nodeSelect();
+}
 
+void NodeView::onValueChanged()
+{
+    updateText();
 }
 
 

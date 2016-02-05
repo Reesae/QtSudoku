@@ -28,19 +28,36 @@ QtSudoku::QtSudoku(QWidget *parent) :
 
     sudokuModel = new SudokuModel(example);
     sudokuView = new SudokuView(sudokuModel);
+
+    for(auto node: sudokuView->boardView)
+        connect(node.second->node,&SudokuBoardNode::valueChanged,node.second,&NodeView::onValueChanged);
+
+
+
     for(auto node: sudokuView->boardView)
     {
         scene->addItem(node.second);
         scene->addItem(node.second->text);
+        connect(node.second,&NodeView::nodeSelect,sudokuView,&SudokuView::nodeSelected);
     }
     connect(this,&QtSudoku::keyPressEvent,sudokuView,&SudokuView::keyPressedEvent);
 
-    clock_t start = clock();
-    sudokuModel->solvePuzzle();
-    double duration = (clock()-start)/CLOCKS_PER_SEC;
+    solve = new Button(this);
+    check = new Button(this);
+
+    scene->addItem(solve);
+    scene->addItem(check);
+
+    solve->setPos(700,200);
+    check->setPos(700,350);
 
 
-    qDebug()<<duration;
+    connect(solve,&Button::clicked,sudokuModel,&SudokuModel::solvePuzzle);
+    connect(check,&Button::clicked,sudokuModel,&SudokuModel::check);
+
+
+
+
 }
 
 QtSudoku::~QtSudoku()
@@ -49,13 +66,13 @@ QtSudoku::~QtSudoku()
 }
 
 
-const std::vector<unsigned int> QtSudoku::example{0,8,4,0,5,0,0,3,1,
-                                                  5,0,7,4,2,3,9,0,6,
-                                                  9,2,0,6,0,1,5,7,4,
-                                                  0,3,5,1,7,0,0,9,8,
-                                                  1,0,8,0,6,9,0,2,3,
-                                                  2,6,9,0,4,8,7,1,0,
-                                                  8,4,1,2,9,5,0,6,7,
-                                                  3,5,2,7,1,6,0,4,9,
-                                                  0,0,6,8,0,4,1,5,0
+const std::vector<unsigned int> QtSudoku::example{6,8,4,9,5,7,0,3,1,
+                                                  5,0,7,4,2,3,0,8,6,
+                                                  9,2,0,6,8,1,5,7,4,
+                                                  4,3,5,1,7,0,6,9,8,
+                                                  1,0,8,5,6,9,4,2,3,
+                                                  2,6,9,0,4,8,0,1,5,
+                                                  8,4,1,2,9,5,3,6,7,
+                                                  3,0,2,7,1,6,0,4,9,
+                                                  7,9,6,0,3,4,1,5,0
                                                   };
