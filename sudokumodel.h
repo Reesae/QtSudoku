@@ -15,7 +15,8 @@ public:
     std::vector<unsigned int> getValuesFromRow(std::string key);
     std::vector<unsigned int> getValuesFromColumn(std::string key);
     std::vector<unsigned int> getValuesFromSquare(std::string key);
-    void getUnsolvedNode();
+    void getUnsolvedNodes();
+    void sortUnsolvedNodes();
     bool solveNode(std::string key);
     void solvePuzzle();
     void check();
@@ -23,7 +24,7 @@ public:
     std::unordered_map<std::string,SudokuBoardNode*> sudokuBoard;
 private:
     std::vector<std::string> unsolvedNodes;
-    SudokuSquareModel squareModel;
+    SudokuSquareModel* squareModel;
 
     void checkRows();
     void checkColumns();

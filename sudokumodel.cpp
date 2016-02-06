@@ -1,6 +1,11 @@
 #include "sudokumodel.h"
 #include <typeinfo>
 #include <QDebug>
+#include <chrono>
+#include <algorithm>
+#include <future>
+using namespace std::chrono;
+
 SudokuModel::SudokuModel():squareModel()
 {
     unsigned int s = SudokuBoardNode::size;
@@ -10,15 +15,16 @@ SudokuModel::SudokuModel():squareModel()
     {
         if(key[1] != '9' )
         {
-            key[1]+=1;
+            key[1] += 1;
         }
         else
         {
-            key[0]+=1;
+            key[0] += 1;
             key[1] = '1';
         }
         sudokuBoard.emplace(key,new SudokuBoardNode(0));
     }
+    squareModel = new SudokuSquareModel;
 
 }
 
@@ -31,15 +37,16 @@ SudokuModel::SudokuModel(std::vector<unsigned int> values)
     {
         if(key[1] != '9' )
         {
-            key[1]+=1;
+            key[1] += 1;
         }
         else
         {
-            key[0]+=1;
+            key[0] += 1;
             key[1] = '1';
         }
         sudokuBoard.emplace(key,new SudokuBoardNode(values[i]));
     }
+       squareModel = new SudokuSquareModel;
 }
 
 std::vector<unsigned int> SudokuModel::getValuesFromRow(std::string key)
@@ -74,14 +81,14 @@ std::vector<unsigned int> SudokuModel::getValuesFromSquare(std::string key)
 {
     std::vector<unsigned int> values;
 
-    for(auto vec: squareModel.squares)
+    for(auto vec: squareModel->squares)
     {
         auto itr = find(vec->cbegin(),vec->cend(),key);
         if(itr != vec->cend())
         {
-            for(auto x: *vec)
+            for(auto key: *vec)
             {
-               auto itr = sudokuBoard.find(x);
+               auto itr = sudokuBoard.find(key);
                if(itr != sudokuBoard.cend())
                   values.push_back((*itr).second->currentValue);
             }
@@ -92,19 +99,23 @@ std::vector<unsigned int> SudokuModel::getValuesFromSquare(std::string key)
 
 }
 
-void SudokuModel::getUnsolvedNode()
+void SudokuModel::getUnsolvedNodes()
 {
-
     for(auto it: sudokuBoard)
-    {
         if(it.second->currentValue == 0)
             unsolvedNodes.push_back(it.first);
-    }
+
+}
+
+void SudokuModel::sortUnsolvedNodes()
+{
+    std::sort(unsolvedNodes.begin(),unsolvedNodes.end(),[this](auto& a,auto& b){
+        return this->sudokuBoard.at(a)->possibleValues.size() < this->sudokuBoard.at(b)->possibleValues.size();
+    });
 }
 
 bool SudokuModel::solveNode(std::string key)
 {
-
     std::vector<unsigned int> usedValues;
     std::vector<unsigned int> rowValues = getValuesFromRow(key);
     std::vector<unsigned int> columnValues = getValuesFromColumn(key);
@@ -121,16 +132,14 @@ bool SudokuModel::solveNode(std::string key)
     auto node = sudokuBoard.at(key);
     for(auto itr = usedValues.begin();itr != usedValues.end();itr++)
     {
-        auto it = find(node->possibleValue.begin(),node->possibleValue.end(),*itr);
-        if(it != node->possibleValue.end())
-            node->possibleValue.erase(it);
-
-
+        auto it = find(node->possibleValues.begin(),node->possibleValues.end(),*itr);
+        if(it != node->possibleValues.end())
+            node->possibleValues.erase(it);
     }
 
-    if(node->possibleValue.size() == 1)
+    if(node->possibleValues.size() == 1)
     {
-        sudokuBoard[key]->currentValue = node->possibleValue[0];
+        sudokuBoard[key]->currentValue = node->possibleValues[0];
         emit sudokuBoard[key]->valueChanged();
         return true;
     }
@@ -140,7 +149,9 @@ bool SudokuModel::solveNode(std::string key)
 
 void SudokuModel::solvePuzzle()
 {
-    getUnsolvedNode();
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+    getUnsolvedNodes();
+
     while(unsolvedNodes.size())
     {
         for(auto it = unsolvedNodes.begin(); it != unsolvedNodes.end();)
@@ -148,18 +159,22 @@ void SudokuModel::solvePuzzle()
             if(solveNode(*it))
                 unsolvedNodes.erase(it);
         }
-
     }
 
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>( t2 - t1 ).count();
+    qDebug() << duration<< "Duration of solving.";
 }
 
 void SudokuModel::check()
 {
+
     try{
     checkRows();
     checkColumns();
     checkSquares();
-    }catch(std::string s)
+    }
+    catch(std::string s)
     {
         qDebug()<<QString(s.c_str());
     }
@@ -182,6 +197,7 @@ void SudokuModel::checkRows()
         }
 
     });
+
 
 }
 

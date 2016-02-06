@@ -1,7 +1,8 @@
 #include "nodeview.h"
 #include "main.cpp"
 #include <QDebug>
-
+#include <chrono>
+using namespace std::chrono;
 NodeView::NodeView(SudokuBoardNode *node):node(node),isActive(false)
 {
     setRect(0,0,size,size);

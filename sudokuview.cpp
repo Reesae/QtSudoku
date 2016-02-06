@@ -8,18 +8,16 @@ SudokuView::SudokuView(SudokuModel *model):model(model)
     {
         if(key[1] != '9' )
         {
-            key[1]+=1;
+            key[1] += 1;
         }
         else
         {
-            key[0]+=1;
+            key[0] += 1;
             key[1] = '1';
         }
         boardView.emplace(key,new NodeView(model->sudokuBoard.at(key)));
         boardView.at(key)->setPosition(key);
     }
-
-
 }
 
 void SudokuView::updateView()

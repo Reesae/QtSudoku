@@ -7,9 +7,9 @@ class TestSudokuBoardNode : public QObject
 
 private slots:
     void createsWithAssaignedValue();
-    void vectorOfPossibleValuesIsEmptyOnValueAssaigned();
+    void vectorOfpossibleValuessIsEmptyOnValueAssaigned();
     void setsCurrentValueToZeroOnInvalidNumberPassed();
-    void vectorsOfPossibleValuesSizeIsProportionalToSizeOfGrid();
+    void vectorsOfpossibleValuessSizeIsProportionalToSizeOfGrid();
 };
 
 

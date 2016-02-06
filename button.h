@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsRectItem>
+#include <QGraphicsTextItem>
 class Button : public QObject,public QGraphicsRectItem
 {
     Q_OBJECT
@@ -11,6 +12,7 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    QGraphicsTextItem * text;
 signals:
     void clicked();
 public slots:

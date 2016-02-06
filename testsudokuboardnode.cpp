@@ -6,10 +6,10 @@ void TestSudokuBoardNode::createsWithAssaignedValue()
     QVERIFY(test.currentValue == 3);
 }
 
-void TestSudokuBoardNode::vectorOfPossibleValuesIsEmptyOnValueAssaigned()
+void TestSudokuBoardNode::vectorOfpossibleValuessIsEmptyOnValueAssaigned()
 {
     SudokuBoardNode test(3);
-    QVERIFY(test.possibleValue.empty());
+    QVERIFY(test.possibleValues.empty());
 }
 
 void TestSudokuBoardNode::setsCurrentValueToZeroOnInvalidNumberPassed()
@@ -20,8 +20,8 @@ void TestSudokuBoardNode::setsCurrentValueToZeroOnInvalidNumberPassed()
 
 }
 
-void TestSudokuBoardNode::vectorsOfPossibleValuesSizeIsProportionalToSizeOfGrid()
+void TestSudokuBoardNode::vectorsOfpossibleValuessSizeIsProportionalToSizeOfGrid()
 {
      SudokuBoardNode test1(0);
-     QVERIFY((test1.size * test1.size) == test1.possibleValue.size());
+     QVERIFY((test1.size * test1.size) == test1.possibleValues.size());
 }

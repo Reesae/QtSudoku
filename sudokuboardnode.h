@@ -9,7 +9,7 @@ class SudokuBoardNode:public QObject
 public:
     SudokuBoardNode(unsigned int value);
     unsigned int currentValue;
-    std::vector <unsigned int> possibleValue;
+    std::vector <unsigned int> possibleValues;
     static constexpr unsigned int size = 3;
 signals:
     void valueChanged();

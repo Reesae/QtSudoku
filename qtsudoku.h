@@ -26,7 +26,11 @@ private:
     Button * solve;
     Button * check;
 
+    void setupLayout();
+    void setupModelAndView();
+    void setupButtons();
     static const std::vector<unsigned int> example;
+    static const std::vector<unsigned int> example2;
 signals:
     void keyPressEvent(QKeyEvent*);
 
